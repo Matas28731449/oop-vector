@@ -23,14 +23,14 @@ class Vector {
     // DESTRUCTOR
         ~Vector() { uncreate(); }
     // OPERATORS
-        Vector &operator=(const Vector &other) {
+        Vector &operator=(const Vector &other) { // copy
             if(&other != this) {
                 uncreate();
                 create(other.begin(), other.end());
             }
             return *this;
         }
-        Vector &operator=(Vector &&other) noexcept {
+        Vector &operator=(Vector &&other) noexcept { // move
             if(&other != this) {
                 uncreate();
                 std::swap(other.data, data);
@@ -39,6 +39,15 @@ class Vector {
             }
             return *this;
         }
+    // ELEMENT ACCESS
+        reference front() { return data[0]; }
+        const_reference front() const { return data[0]; }
+        reference back() { return data[size() - 1]; }
+        const_reference back() const { return data[size() - 1]; }
+        reference operator[](size_type i) { return data[i]; }
+        const_reference operator[](size_type i) const { return data[i]; }
+        reference at(size_type n) { return n < size() ? data[n] : throw std::out_of_range("Out of range: Vector::at()"); }
+        const_reference at(size_type n) const { return n < size() ? data[n] : throw std::out_of_range("Out of range: Vector::at()"); }
     // ITERATORS
         iterator begin() { return data; }
         const_iterator begin() const { return data; }
@@ -60,16 +69,7 @@ class Vector {
             iterator it = data;
             return ++ it;
         }
-    // ELEMENT ACCESS
-        reference front() { return data[0]; }
-        const_reference front() const { return data[0]; }
-        reference back() { return data[size() - 1]; }
-        const_reference back() const { return data[size() - 1]; }
-        reference operator[](size_type i) { return data[i]; }
-        const_reference operator[](size_type i) const { return data[i]; }
-        reference at(size_type n) { return n < size() ? data[n] : throw std::out_of_range("Out of range: Vector::at()"); }
-        const_reference at(size_type n) const { return n < size() ? data[n] : throw std::out_of_range("Out of range: Vector::at()"); }
-    //
+    // CAPACITY
         size_type size() const { return avail - data; }
         size_type max_size() const { return std::numeric_limits<size_type>::max(); }
         size_type capacity() const { return limit - data; }
@@ -164,7 +164,7 @@ class Vector {
             }
             data = avail = limit = nullptr;
         }
-        void grow() {
+        void grow() { // doubles the size
             size_type new_size = std::max(2 * (limit - data), ptrdiff_t(1));
             iterator new_data = alloc.allocate(new_size);
             iterator new_avail = std::uninitialized_copy(data, avail, new_data);
@@ -175,7 +175,7 @@ class Vector {
             avail = new_avail;
             limit = data + new_size;
         }
-        void grow(int n) {
+        void grow(int n) { // increases the size by n 
             size_type new_size = n;
             iterator new_data = alloc.allocate(new_size);
             iterator new_avail = std::uninitialized_copy(data, avail, new_data);

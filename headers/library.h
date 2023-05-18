@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include "vector.h" // my vector class
 #include <vector>
 #include <random>
 #include <chrono>
