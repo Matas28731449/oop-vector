@@ -1,10 +1,28 @@
 # oop-vector
 
+**Performance analysis**
+
+- With or without `optimization flags` `my vector` class is almost `2x faster` than `std::vector` :
+
+*Without any flag*
+
+| Type / Size | 10.000      | 100.000    | 1.000.000 | 10.000.000 | 100.000.000 |
+|-------------|-------------|------------|-----------|------------|-------------|
+| std::vector | 0.0016222   | 0.00851272 | 0.0690605 | 0.806923   | 7.77426     |
+| my vector   | 0.000698528 | 0.00354708 | 0.0256397 | 0.290584   | 3.61772     |
+
+*With -O3 flag*
+
+| Type / Size | 10.000      | 100.000     | 1.000.000  | 10.000.000 | 100.000.000 |
+|-------------|-------------|-------------|------------|------------|-------------|
+| std::vector | 0.000168982 | 0.00140116  | 0.00962612 | 0.105263   | 1.26109     |
+| my vector   | 0.000127047 | 0.000941742 | 0.00447087 | 0.0806293  | 1.24686     |
+
 **Function analysis**
 
 - Compared to `std::vector`, my realised functions in `my vector` class work just as same :
 
-resize()
+*resize()*
 ```
 Vector<int> tmp;
 
@@ -24,7 +42,7 @@ OUTPUT:
 6 0 0 0 0
 ```
 
-insert()
+*insert()*
 ```
 Vector<int> tmp;
 
@@ -46,7 +64,7 @@ OUTPUT:
 6 5 0 7
 ```
 
-erase()
+*erase()*
 ```
 Vector<int> tmp;
 
@@ -64,7 +82,7 @@ Value: 6, size: 2
 Value: 5, size: 1
 ```
 
-push_back()
+*push_back()*
 ```
 Vector<int> tmp;
 
@@ -79,7 +97,7 @@ Value: 5, size: 1
 Value: 7, size: 2
 ```
 
-pop_back()
+*pop_back()*
 ```
 Vector<int> tmp;
 

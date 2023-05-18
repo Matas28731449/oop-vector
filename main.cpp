@@ -2,66 +2,46 @@
 #include "headers/references.h"
 
 int main() {
-    // resize()
-    Vector<int> tmp;
+    unsigned int size = 100000000;
 
-    tmp.push_back(6);
-    for(auto i : tmp) {
-        cout << i << " ";
+    vector<int> std_vector;
+    int         alloc_count = 0,
+                tmp_capacity = 0;
+
+    auto start = std::chrono::high_resolution_clock::now();
+    for (int i = 1; i <= size; ++ i) {
+        if (std_vector.capacity() != tmp_capacity) {
+            tmp_capacity = std_vector.capacity();
+            alloc_count ++;
+        }
+        std_vector.push_back(i);
     }
-    cout << "\n";
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
 
-    tmp.resize(5);
-    for(auto i : tmp) {
-        cout << i << " ";
+    cout << "std::vector time: " << diff.count() << "\n";
+    cout << "std::vector total allocations: " << alloc_count << "\n";
+
+
+
+    alloc_count = 0;
+    tmp_capacity = 0;
+    Vector<int> my_vector;
+
+    start = std::chrono::high_resolution_clock::now();
+    for (int i = 1; i <= size; ++ i) {
+        if (my_vector.capacity() != tmp_capacity) {
+            tmp_capacity = my_vector.capacity();
+            alloc_count ++;
+        }
+        my_vector.push_back(i);
     }
+    end = std::chrono::high_resolution_clock::now();
+    diff = end - start;
 
-    // // insert()
-    // Vector<int> tmp;
+    cout << "my vector time: " << diff.count() << "\n";
+    cout << "my vector total allocations: " << alloc_count << "\n";
 
-    // tmp.push_back(6);
-    // tmp.push_back(5);
-    // tmp.push_back(7);
-    // for(auto i : tmp) {
-    //     cout << i << " ";
-    // }
-    // cout << "\n";
-
-    // tmp.insert(tmp.begin() + 2, 0);
-    // for(auto i : tmp) {
-    //     cout << i << " ";
-    // }
-
-    // // erase()
-    // Vector<int> tmp;
-
-    // tmp.push_back(6);
-    // tmp.push_back(5);
-    // cout << "Value: " << tmp.front() << ", size: " << tmp.size() << "\n";
-
-    // Vector<int>::iterator it = tmp.begin();
-
-    // tmp.erase(it);
-    // cout << "Value: " << tmp.front() << ", size: " << tmp.size() << "\n";
-
-    // // push_back()
-    // Vector<int> tmp;
-
-    // tmp.push_back(5);
-    // cout << "Value: " << tmp.back() << ", size: " << tmp.size() << "\n";
-
-    // tmp.push_back(7);
-    // cout << "Value: " << tmp.back() << ", size: " << tmp.size() << "\n";
-
-    // // pop_back()
-    // Vector<int> tmp;
-
-    // tmp.push_back(6);
-    // cout << "Value: " << tmp.back() << ", size: " << tmp.size() << "\n";
-
-    // tmp.pop_back();
-    // cout << "Value: " << tmp.back() << ", size: " << tmp.size() << "\n";
-    
     // vector<student> arr;       // array
     // string          opt = " "; // option
     // //----------INPUT----------
@@ -71,7 +51,7 @@ int main() {
     // output(arr, opt);
     // auto end = std::chrono::high_resolution_clock::now();
     // std::chrono::duration<double> difference = end - start;
-    // cout << "\nProgram time: " << difference.count() << " s\n";
+    // cout << "Program time: " << difference.count() << " s\n";
 
     return 0;
 }
