@@ -4,11 +4,12 @@ void student::setGrade(int a) {
     grade.reserve(grade.size() + 1);
     grade.push_back(a);
 }
-void input(vector<student> &arr, string &opt) {
+void input(Vector<student> &arr, string &opt) {
     student tmp;
     string  req = " ";
     cout << "'in' to input the data manually ;\n'gf' to generate random data file ;\n'rf' to read the data from file .\n";
-    cout << "Enter your choice: "; cin >> opt;
+    // cout << "Enter your choice: "; cin >> opt;
+    opt = "rf";
     while(cin.fail() or (opt != "in" && opt != "gf" && opt != "rf")) {
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -31,20 +32,21 @@ void input(vector<student> &arr, string &opt) {
     }
     else if(opt == "rf") fileInput(arr);
 }
-void output(vector<student> &arr, string tmp) {
+void output(Vector<student> &arr, string tmp) {
     string opt = " ";
     //----------END OF THE PROGRAM----------
-    while(opt != "vid" && opt != "med") {
-        cout << "How would you like to calculate the final mark? Type 'vid' or 'med': "; cin >> opt;
-    }
+    // while(opt != "vid" && opt != "med") {
+    //     cout << "How would you like to calculate the final mark? Type 'vid' or 'med': "; cin >> opt;
+    // }
+    opt = "vid";
     //----------OUTPUT IN CONSOLE----------
     if(tmp == "in") {
-        // cout << "-----------------------------------------------------------\n";
-        // cout << left << setw(10) << "Vardas" << left << setw(14) << "Pavarde" << left << setw(12) << "Galutinis (Vid.) / Galutinis (Med.)\n";
-        // cout << "-----------------------------------------------------------\n";
-        // for(auto &i : arr) {
-        //     opt == "vid" ? printf("%-9s %-13s %-19.2f \n", i.getName().c_str(), i.getSurname().c_str(), medium(i)) : printf("%-9s %-13s %23.2f \n", i.getName().c_str(), i.getSurname().c_str(), median(i));
-        // }
+        cout << "-----------------------------------------------------------\n";
+        cout << left << setw(10) << "Vardas" << left << setw(14) << "Pavarde" << left << setw(12) << "Galutinis (Vid.) / Galutinis (Med.)\n";
+        cout << "-----------------------------------------------------------\n";
+        for(auto &i : arr) {
+            opt == "vid" ? printf("%-9s %-13s %-19.2f \n", i.getName().c_str(), i.getSurname().c_str(), medium(i)) : printf("%-9s %-13s %23.2f \n", i.getName().c_str(), i.getSurname().c_str(), median(i));
+        }
     }
     //----------OUTPUT IN FILE----------
     else if(tmp == "rf") {
@@ -69,16 +71,22 @@ void output(vector<student> &arr, string tmp) {
         // SPLITTING, strategy 3
         cout << "Splitting into two vectors (3nd strategy)...\n";
         start = std::chrono::high_resolution_clock::now();
-        vector<student> fail;
+        Vector<student> fail;
         if(opt == "vid") {
-            auto frac = find_if(arr.begin(), arr.end(), [] (student a) { return a.getMedium() < 5; }); // fracture
-            fail.insert(fail.begin(), frac, arr.end());
-            arr.erase(frac, arr.end());
+            for (int i = arr.size() - 1; i >= 0; i --) {
+                if (arr.at(i).getMedium() < 5) {
+                    fail.push_back(arr.at(i));
+                    arr.pop_back();
+                }
+            }
         }
         else if(opt == "med") {
-            auto frac = find_if(arr.begin(), arr.end(), [] (student a) { return a.getMedian() < 5; });
-            fail.insert(fail.begin(), frac, arr.end());
-            arr.erase(frac, arr.end());
+            for (int i = arr.size() - 1; i >= 0; i --) {
+                if (arr.at(i).getMedian() < 5) {
+                    fail.push_back(arr.at(i));
+                    arr.pop_back();
+                }
+            }
         }
         fail.shrink_to_fit();
         arr.shrink_to_fit();
@@ -124,7 +132,7 @@ void output(vector<student> &arr, string tmp) {
         cout << "finished in: " << difference.count() << " s\n";
     }
 }
-void fileInput(vector<student> &arr) {
+void fileInput(Vector<student> &arr) {
     stringstream buf;   // buffer
     ifstream     in;    // input
     student      tmp;   // temporary
@@ -133,7 +141,8 @@ void fileInput(vector<student> &arr) {
     int          grade;
 
     system("ls read");
-    cout << "Enter the name of the file to read from: "; cin >> file;
+    // cout << "Enter the name of the file to read from: "; cin >> file;
+    file = "students100000.txt";
     try {
         cout << "Reading data...\n";
         auto start = std::chrono::high_resolution_clock::now();
@@ -215,12 +224,12 @@ void randInput(student &tmp) {
     }
 }
 double medium(student &tmp) {
-    vector<int> grd = tmp.getGrade(); // temporary copy of grades
-    int         sum = accumulate(grd.begin(), grd.end(), sum); // computing the sum of the given initial value and the elements in the given range
+    Vector<int> grd = tmp.getGrade(); // temporary copy of grades
+    int         sum = std::accumulate(grd.begin(), grd.end(), sum); // computing the sum of the given initial value and the elements in the given range
     return 0.4 * ((double)sum / grd.size()) + 0.6 * tmp.getExam();
 }
 double median(student &tmp) {
-    vector<int> grd = tmp.getGrade(); // temporary copy of grades
+    Vector<int> grd = tmp.getGrade(); // temporary copy of grades
     sort(grd.begin(), grd.end());
     return grd.size() % 2 == 0 ? 0.4 * ((grd[grd.size() / 2 - 1] + grd[grd.size() / 2]) / 2.0) + 0.6 * tmp.getExam() : 0.4 * grd[grd.size() / 2] + 0.6 * tmp.getExam();
 }

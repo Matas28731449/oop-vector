@@ -23,7 +23,7 @@ class person {
 
 class student : public person {
     private:
-        vector<int> grade;
+        Vector<int> grade;
         int         exam;
         float       medium,
                     median;
@@ -32,7 +32,7 @@ class student : public person {
 
         inline string getName() const { return name; }
         inline string getSurname() const { return surname; }
-        inline vector<int> getGrade() const { return grade; }
+        inline Vector<int> getGrade() const { return grade; }
         inline int getExam() const { return exam; }
         inline double getMedium() const { return medium; }
         inline double getMedian() const { return median; }
@@ -87,9 +87,9 @@ class student : public person {
         ~student() { clearGrade(); }
 };
 
-void input(vector<student> &arr, string &opt);
-void output(vector<student> &arr, string tmp);
-void fileInput(vector<student> &arr);
+void input(Vector<student> &arr, string &opt);
+void output(Vector<student> &arr, string tmp);
+void fileInput(Vector<student> &arr);
 void userInput(student &tmp);
 void randInput(student &tmp);
 double medium(student &tmp);

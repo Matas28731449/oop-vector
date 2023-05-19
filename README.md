@@ -1,5 +1,25 @@
 # oop-vector
 
+**v1.5 program analysis**
+
+- Replaced `std::vector` with `my vector` class and performed a `performance analysis` (used `-O3` optimization `flag`);
+
+- `Until ~100.000` elements, `my vector` performed `faster` :
+
+| Vector / Size | 100.000 | 1.000.000 |
+|---------------|---------|-----------|
+| std::vector   | 1.54949 | 8.71595   |
+| my vector     | 1.49537 | 16.3424   |
+
+**Allocation analysis**
+
+- With *int* and *student* data types `allocation count` is the `same` when working with `100.000.000 elements` :
+
+| Vector / Type | int | student |
+|---------------|-----|---------|
+| std::vector   | 28  | 28      |
+| my vector     | 28  | 28      |
+
 **Performance analysis**
 
 - With or without `optimization flags` `my vector` class is almost `2x faster` than `std::vector` :
